@@ -1,0 +1,24 @@
+{
+  "_id": "56a24697ff2e6bd035e7f79c",
+  "creator": {
+    "_id": "565859826e3acf1034f3f08d",
+    "username": "willdurrant",
+    "name": "Will"
+  },
+  "status": {
+    "label": "Completed",
+    "priority": 3,
+    "_id": "56a246acff2e6bd035e7f7b3"
+  },
+  "priority": {
+    "label": "Urgent",
+    "priority": 3,
+    "_id": "56a246acff2e6bd035e7f7b4"
+  },
+  "__v": 0,
+  "completed": false,
+  "tag": "Work",
+  "comment": "",
+  "title": "22",
+  "created": "2016-01-22T15:11:19.553Z"
+}
