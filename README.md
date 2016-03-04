@@ -12,3 +12,9 @@ To Run Swagger UI
 To Run Application
 
 '''swagger project start'''
+
+
+
+To Push To Github
+
+'''git push origin master'''

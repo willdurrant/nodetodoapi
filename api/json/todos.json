@@ -3,8 +3,8 @@
     "_id": "56a24697ff2e6bd035e7f79c",
     "creator": {
       "_id": "565859826e3acf1034f3f08d",
-      "username": "willdurrant",
-      "name": "Will"
+      "username": "johnsmith",
+      "name": "John"
     },
     "status": {
       "label": "Completed",
@@ -27,8 +27,8 @@
     "_id": "56a246bcff2e6bd035e7f7b9",
     "creator": {
       "_id": "565859826e3acf1034f3f08d",
-      "username": "willdurrant",
-      "name": "Will"
+      "username": "johnsmith",
+      "name": "John"
     },
     "status": {
       "label": "Completed",
@@ -51,8 +51,8 @@
     "_id": "56a24681ff2e6bd035e7f795",
     "creator": {
       "_id": "565859826e3acf1034f3f08d",
-      "username": "willdurrant",
-      "name": "Will"
+      "username": "johnsmith",
+      "name": "john"
     },
     "status": {
       "label": "Not Started",
@@ -75,8 +75,8 @@
     "_id": "56a24b14778f4be83eb73755",
     "creator": {
       "_id": "565859826e3acf1034f3f08d",
-      "username": "willdurrant",
-      "name": "Will"
+      "username": "johnsmith",
+      "name": "John"
     },
     "status": {
       "label": "In Progress",
