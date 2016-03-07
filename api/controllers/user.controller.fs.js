@@ -2,10 +2,10 @@
 var fs = require('fs');
 
 module.exports = {
-  findUser: findUser
+  findUserByUsername: findUserByUsername
 };
 
-function findUser(req, res) {
+function findUserByUsername(req, res) {
   var username = req.swagger.params.username.value;
   fs.readFile( __dirname + "../../json/" + "user.json", 'utf8', function (err, data) {
     res.json(JSON.parse(data));

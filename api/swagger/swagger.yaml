@@ -20,7 +20,7 @@ produces:
   - text/plain
 paths:
   /hello:
-    x-swagger-router-controller: todo.controller.fs
+    x-swagger-router-controller: todo.controller
     get:
       description: Returns greetings to the caller
       operationId: hello
@@ -40,7 +40,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   '/secure/todos/{id}':
-    x-swagger-router-controller: todo.controller.fs
+    x-swagger-router-controller: todo.controller
     get:
       description: Get one `TodoModel` with given id.
       operationId: findTodo
@@ -49,7 +49,7 @@ paths:
           in: path
           required: true
           description: ID of a `TodoModel`
-          type: integer
+          type: string
       responses:
         '200':
           description: OK
@@ -73,7 +73,7 @@ paths:
           in: path
           required: true
           description: ID of a `TodoModel`
-          type: integer
+          type: string
       responses:
         '200':
           description: OK
@@ -86,15 +86,22 @@ paths:
             $ref: "#/definitions/ErrorResponse"
     delete:
       description: Delete a `TodoModel` with given id.
+      operationId: deleteTodo
       parameters:
         - name: id
           in: path
           required: true
           description: ID of a `TodoModel`
-          type: integer
+          type: string
       responses:
-        '200':
-          description: OK
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/HelloWorldResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /secure/todos:
     x-swagger-router-controller: todo.controller
     post:
@@ -114,6 +121,17 @@ paths:
     get:
       description: Get all `TodoModels`.
       operationId: listTodos
+      parameters:
+        - name: creator
+          in: query
+          description: The user ID whom created the todos
+          required: true
+          type: string
+        - name: tag
+          in: query
+          description: Any tags for todos
+          required: false
+          type: string
       responses:
         '200':
           description: OK
@@ -121,12 +139,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/TodoModel'        
-          
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   '/secure/users/{username}':
-    x-swagger-router-controller: user.controller.fs
+    x-swagger-router-controller: user.controller
     get:
-      description: Get one `UserModel` with given id.
-      operationId: findUser
+      description: Get one `UserModel` with given username.
+      operationId: findUserByUsername
       parameters:
         - name: username
           in: path
@@ -139,7 +160,7 @@ paths:
           schema:
             $ref: '#/definitions/UserModel'
   /authenticate:
-    x-swagger-router-controller: authenticate.controller.fs
+    x-swagger-router-controller: authenticate.controller
     post:
       description: Authenticates.
       operationId: authenticate

@@ -10,6 +10,7 @@
   "dependencies": {
     "express": "^4.12.3",
     "fs": "0.0.2",
+    "jsonwebtoken": "^5.7.0",
     "mongoose": "^4.4.6",
     "swagger-express-mw": "^0.1.0"
   },
