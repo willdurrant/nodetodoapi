@@ -15,9 +15,11 @@
 
     ```SET TODO_SECRET=```
 
-* Run Swagger project
+* Swagger project commands
 
     ```swagger project start```
+
+    ```swagger project test```
 
 
 

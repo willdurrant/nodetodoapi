@@ -1,17 +1,10 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Todo = mongoose.model('Todo');
+    Todo = mongoose.model('Todo'),
+    util = require('util'),
+    helper = require('./../helpers/helper');
 
-var getErrorMessage = function(err) {
-  if (err.errors) {
-    for (var errName in err.errors) {
-      if (err.errors[errName].message) return err.errors[errName].message;
-    }
-  } else {
-    return 'Unknown server error';
-  }
-};
 
 module.exports = {
   hello: hello,
@@ -25,12 +18,10 @@ module.exports = {
 function hello(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
   var name = req.swagger.params.name.value || 'stranger';
-  //var hello = util.format('Hello, %s!', name);
-
-  var hello = {"message":"some message", "age":7};
-
-
+  var hello = util.format('Hello, %s!', name);
   // this sends back a JSON response which is a single string
+  console.log('HELLO ' + JSON.stringify(hello, null , 2));
+
   res.json(hello);
 }
 
@@ -71,7 +62,7 @@ function listTodos(req, res) {
       console.log('err listTodos called... ' + err);
 
       return res.status(400).send({
-        message: getErrorMessage(err)
+        message: helper.getErrorMessage(err)
       });
     } else {
       console.log('Got some todos');
@@ -82,40 +73,74 @@ function listTodos(req, res) {
 }
 
 function findTodo(req, res) {
+  console.log('findTodo called...');
   var id = req.swagger.params.id.value;
-  Todo.findById(id).populate('creator', 'name username').exec(function(err, todo) {
-    if (err)
-      return next(err);
-
-    if (!todo)
-      return next(new Error('Failed to load todo ' + id));
-
-    req.todo = todo;
-    next();
+  Todo.findById(id).populate('creator', 'name username').exec(function(err, retrievedTodo) {
+    if (err) {
+      return res.status(400).send({
+        message: helper.getErrorMessage(err)
+      });
+    } else {
+      res.json(retrievedTodo);
+    }
   });
 
 }
 
 function createTodo(req, res) {
-  var todo = req.swagger.params.body.value;
-  res.json(todo);
+  var todo = new Todo(req.swagger.params.body.value);
+  console.log('save : ' + todo.title + ' by creator ' + todo.creator);
+  if(todo.creator === undefined){
+    return res.status(400).send({
+      message: 'No creator found for new Todo'
+    });
+  }
+  todo.save(function(err, persistedTodo) {
+    if (err) {
+      return res.status(400).send({
+        message: helper.getErrorMessage(err)
+      });
+    } else {
+
+      //Should be a way to populate a object reference without doing another query but for the swagger validation
+      //the creator needs populating
+      Todo.findById(persistedTodo._id).populate('creator', 'name username').exec(function(err, retrievedTodo) {
+        if (err) {
+          return res.status(400).send({
+            message: helper.getErrorMessage(err)
+          });
+        } else {
+          res.json(retrievedTodo);
+        }
+      });
+    }
+  });
+
+
 }
 
 function updateTodo(req, res) {
-  var todo = req.swagger.params.body.value;
-  todo.title = req.body.title;
-  todo.tag = req.body.tag;
-  todo.comment = req.body.comment;
-  todo.completed = req.body.completed;
-  todo.status = req.body.status;
-  todo.priority = req.body.priority;
-  todo.save(function(err) {
+  var todo = new Todo(req.swagger.params.body.value);
+  //console.log('updateTodo called with updated Todo : ' + JSON.stringify(todo, null, 2));
+  todo.isNew = false;
+  todo.save(function(err, updatedTodo) {
     if (err) {
+      console.log('err got ' + err);
       return res.status(400).send({
-        message: getErrorMessage(err)
+        message: helper.getErrorMessage(err)
       });
     } else {
-      res.json(todo);
+      //Should be a way to populate a object reference without doing another query but for the swagger validation
+      //the creator needs populating
+      Todo.findById(updatedTodo._id).populate('creator', 'name username').exec(function(err, retrievedTodo) {
+        if (err) {
+          return res.status(400).send({
+            message: helper.getErrorMessage(err)
+          });
+        } else {
+          res.json(retrievedTodo);
+        }
+      });
     }
   });
 }
@@ -126,7 +151,7 @@ function deleteTodo(req, res) {
   Todo.findByIdAndRemove(id, function(err) {
     if (err) {
       return res.status(400).send({
-        message: getErrorMessage(err)
+        message: helper.getErrorMessage(err)
       });
     } else {
       var msg = {"message":"Todo successfully deleted"};

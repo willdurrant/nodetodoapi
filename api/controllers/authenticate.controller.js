@@ -1,8 +1,6 @@
 'use strict';
 var User = require('mongoose').model('User'),
-    //passport = require('passport'),
     jwt = require('jsonwebtoken');
-    //config = require('../../config/config');
 
 
 

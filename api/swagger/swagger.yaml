@@ -20,7 +20,7 @@ produces:
   - text/plain
 paths:
   /hello:
-    x-swagger-router-controller: todo.controller
+    x-swagger-router-controller: hello_world
     get:
       description: Returns greetings to the caller
       operationId: hello
@@ -139,6 +139,28 @@ paths:
             type: array
             items:
               $ref: '#/definitions/TodoModel'        
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /secure/tags:
+    x-swagger-router-controller: tag.controller
+    get:
+      description: Get all TagModels
+      operationId: listTags
+      parameters:
+        - name: creator
+          in: query
+          description: The user ID associated with the tags
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
         default:
           description: Error
           schema:
@@ -271,3 +293,4 @@ definitions:
         type: string
       __v:
         type: integer
+    
