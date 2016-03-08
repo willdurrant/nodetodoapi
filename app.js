@@ -3,6 +3,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 
 var SwaggerExpress = require('swagger-express-mw');
+var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var mongoose = require('./config/mongoose');
 var db = mongoose();
 
@@ -15,6 +16,9 @@ var appRootDir = {
 
 SwaggerExpress.create(appRootDir, function(err, swaggerExpress) {
   if (err) { throw err; }
+
+  // Add swagger-ui (This must be before swaggerExpress.register)
+  app.use(SwaggerUi(swaggerExpress.runner.swagger));
 
   // install middleware
   swaggerExpress.register(app);
