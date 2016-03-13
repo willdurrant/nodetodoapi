@@ -1,6 +1,6 @@
+var server = require('../../../app');
 var should = require('should');
 var request = require('supertest');
-var server = require('../../../app');
 var sinon = require('sinon');
 var mongoose = require('mongoose');
 var fs = require('fs');

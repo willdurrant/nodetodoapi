@@ -28,7 +28,12 @@ SwaggerExpress.create(appRootDir, function(err, swaggerExpress) {
 
   //console.log(process.env.NODE_ENV + ' Using mongodb connection URL ' + config.db);
 
-  if (swaggerExpress.runner.swagger.paths['/hello']) {
-    console.log('try this:\ncurl http://127.0.0.1:' + port + '/hello?name=Scott');
-  }
+  //if (swaggerExpress.runner.swagger.paths['/hello']) {
+  //  console.log('try this:\ncurl http://127.0.0.1:' + port + '/hello?name=Scott');
+  //}
+
+  //if (swaggerExpress.runner.swagger.paths['/api/secure']) {
+  //  console.log('validating token for /api/secure URL');
+  //}
+
 });

@@ -11,11 +11,13 @@ var todo;
 
 describe('models', function () {
 
-    describe('todo.model', function () {
+    describe('user.model', function () {
 
-        beforeEach(function (done) {
+
+        it('should create new User object', function (done) {
+
             user = new User({
-                "username": "testuser",
+                "username": "jsmith",
                 "name": "Test",
                 "email": "test.user@gmail.com",
                 "password": "password123"
@@ -48,37 +50,13 @@ describe('models', function () {
             });
         });
 
-        describe('Create and find new Todo', function () {
 
-
-            it('should create then find the newly persisted todo', function (done) {
-
-                todo.save(function (err, persistedTodo) {
-                    should.not.exist(err);
-                    should.exist(persistedTodo);
-                    should.exist(persistedTodo._id);
-                    Todo.findById(persistedTodo._id).exec(function (err, retrievedTodo) {
-                        should.not.exist(err);
-                        should.exist(retrievedTodo);
-                        done();
-                    });
-                });
-            });
-
-        });
-
-
-        afterEach(function (done) {
-            Todo.remove().exec(function (err) {
-                if (err) console.log('Error removing Todos')
-
-                User.remove().exec(function (err) {
-                    if (err) console.log('Error removing Users')
-                    done();
-                });
-
-            });
-        });
+        //afterEach(function (done) {
+            //User.remove().exec(function (err) {
+            //    if (err) console.log('Error removing Users')
+            //    done();
+            //});
+        //});
     });
 });
 
