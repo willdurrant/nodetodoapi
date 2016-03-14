@@ -1,6 +1,8 @@
 'use strict';
 var User = require('mongoose').model('User'),
-    jwt = require('jsonwebtoken');
+    jwt = require('jsonwebtoken'),
+    config = require('../../config/config');
+
 
 
 
@@ -38,7 +40,7 @@ function authenticate(req, res) {
         } else {
           // if user is found and password is right
           // create a token
-          var token = jwt.sign(_existingUser, process.env.TODO_SECRET, {
+          var token = jwt.sign(_existingUser, config.secret, {
             expiresInMinutes: 1440 // expires in 24 hours
           });
 

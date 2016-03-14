@@ -1,7 +1,6 @@
 'use strict'
 var jwt = require('jsonwebtoken');
-
-var secret = process.env.TODO_SECRET || 'testSecret';
+var config = require('../../config/config');
 
 module.exports = {
     getErrorMessage: getErrorMessage,
@@ -31,7 +30,7 @@ function validateToken(req, res) {
     if (token) {
         // verifies secret and checks exp
         //jwt.verify(token, process.env.TODO_SECRET, function(err, decoded) {
-        jwt.verify(token, secret, function(err, decoded) {
+        jwt.verify(token, config.secret, function(err, decoded) {
             if (err) {
                 return res.json({
                     success: false,

@@ -19,6 +19,10 @@
 
     ```swagger project start```
 
+* To run tests
+
+Need to not have set TODO_SECRET=
+
     ```swagger project test```
 
 
