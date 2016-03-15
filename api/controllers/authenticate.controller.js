@@ -15,7 +15,7 @@ function authenticate(req, res) {
 
   console.log('authenticate api called...');
   var user = User.findOne({
-    username: req.body.username
+    username: authenticationRequest.username
   }, function(err, _existingUser) {
     if (err) {
       return res.status(401).send({
@@ -30,9 +30,7 @@ function authenticate(req, res) {
         });
       } else if (_existingUser) {
         // check if password matches
-        //TODO - get working with _existingUser.authenticate()
-        if(!_existingUser.authenticate(req.body.password)) {
-          // if (_existingUser.password != req.body.password) {
+        if(!_existingUser.authenticate(authenticationRequest.password)) {
           res.status(401).send({
             success: false,
             message: 'Authentication failed. Wrong password.'

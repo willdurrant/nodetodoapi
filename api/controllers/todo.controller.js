@@ -26,7 +26,7 @@ function hello(req, res) {
 }
 
 function listTodos(req, res) {
-
+  helper.validateToken(req, res);
   var queryObj = {};
   var creator = req.swagger.params.creator.value;
   console.log('listTodos called... ' + creator);
@@ -74,6 +74,7 @@ function listTodos(req, res) {
 
 function findTodo(req, res) {
   console.log('findTodo called...');
+  helper.validateToken(req, res);
   var id = req.swagger.params.id.value;
   Todo.findById(id).populate('creator', 'name username').exec(function(err, retrievedTodo) {
     if (err) {
@@ -88,6 +89,7 @@ function findTodo(req, res) {
 }
 
 function createTodo(req, res) {
+  helper.validateToken(req, res);
   var todo = new Todo(req.swagger.params.body.value);
   console.log('save : ' + todo.title + ' by creator ' + todo.creator);
   if(todo.creator === undefined){
@@ -120,6 +122,7 @@ function createTodo(req, res) {
 }
 
 function updateTodo(req, res) {
+  helper.validateToken(req, res);
   var todo = new Todo(req.swagger.params.body.value);
   //console.log('updateTodo called with updated Todo : ' + JSON.stringify(todo, null, 2));
   todo.isNew = false;
@@ -146,6 +149,7 @@ function updateTodo(req, res) {
 }
 
 function deleteTodo(req, res) {
+  helper.validateToken(req, res);
   var id = req.swagger.params.id.value;
   console.log('deleteTodo called for id ' + id);
   Todo.findByIdAndRemove(id, function(err) {

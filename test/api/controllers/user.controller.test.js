@@ -1,6 +1,7 @@
 var should = require('should');
 var request = require('supertest');
 var server = require('../../../app');
+var config = require('../../../config/config');
 var jwt = require('jsonwebtoken');
 var sinon = require('sinon');
 var mongoose = require('mongoose');
@@ -41,7 +42,7 @@ describe('controllers', function () {
                         .expects('findOne').withArgs({username: "jsmith"})
                         .yields(null, expectedResult);
 
-                    var token = jwt.sign(expectedResult, 'testSecret', {
+                    var token = jwt.sign(expectedResult, config.secret, {
                         expiresInMinutes: 1440 // expires in 24 hours
                     });
 

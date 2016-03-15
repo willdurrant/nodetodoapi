@@ -8,8 +8,8 @@ module.exports = {
 };
 
 function listTags(req, res) {
+    helper.validateToken(req, res);
     console.log('Tags Controller list called...');
-
     var creator = req.swagger.params.creator.value;
 
     var queryObj = {};
