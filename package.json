@@ -28,5 +28,6 @@
   "scripts": {
     "start": "node app.js",
     "test": "swagger project test"
-  }
+  },
+  "main": "app.js"
 }

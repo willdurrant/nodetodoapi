@@ -1,7 +1,7 @@
 'use strict';
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-
+var config = require('./config/config');
 var SwaggerExpress = require('swagger-express-mw');
 var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var mongoose = require('./config/mongoose');
@@ -23,8 +23,9 @@ SwaggerExpress.create(appRootDir, function(err, swaggerExpress) {
   // install middleware
   swaggerExpress.register(app);
 
-  var port = process.env.PORT || 10010;
-  app.listen(port);
+  //var port = process.env.PORT || 10010;
+  //app.listen(port); Orig prior Openshift
+  app.listen(config.port, config.server_ip_address);
 
   //console.log(process.env.NODE_ENV + ' Using mongodb connection URL ' + config.db);
 
