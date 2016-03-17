@@ -5,11 +5,11 @@ var port = process.env.OPENSHIFT_NODEJS_PORT || 1337
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 
-var	db_connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
-	process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
-	process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
-	process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
-	process.env.OPENSHIFT_APP_NAME;
+var	db_connection_string = process.env.OPENSHIFT_EXTMONGODB_DB_USERNAME + ":" +
+	process.env.OPENSHIFT_EXTMONGODB_DB_PASSWORD + "@" +
+	process.env.OPENSHIFT_EXTMONGODB_DB_HOST + ':' +
+	process.env.OPENSHIFT_EXTMONGODB_DB_PORT + '/' +
+	process.env.OPENSHIFT_EXTAPP_NAME;
 
 
 module.exports = {
