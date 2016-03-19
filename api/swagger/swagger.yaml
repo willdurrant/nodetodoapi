@@ -1,0 +1,296 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Node Todo API
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+  - text/plain
+paths:
+  /hello:
+    x-swagger-router-controller: hello_world
+    get:
+      description: Returns greetings to the caller
+      operationId: hello
+      parameters:
+            - name: name
+              in: query
+              description: The name of the person to whom to say hello
+              required: false
+              type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/HelloWorldResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  '/secure/todos/{id}':
+    x-swagger-router-controller: todo.controller
+    get:
+      description: Get one `TodoModel` with given id.
+      operationId: findTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `TodoModel`
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TodoModel'
+       # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Update a `TodoModel` with given id.
+      operationId: updateTodo
+      parameters:
+        - name: body
+          description: A new `TodoModel`
+          in: body
+          schema:
+            $ref: '#/definitions/TodoModel'
+        - name: id
+          in: path
+          required: true
+          description: ID of a `TodoModel`
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TodoModel'
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Delete a `TodoModel` with given id.
+      operationId: deleteTodo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of a `TodoModel`
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/HelloWorldResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /secure/todos:
+    x-swagger-router-controller: todo.controller
+    post:
+      description: Make a new `TodoModel`.
+      operationId: createTodo
+      parameters:
+        - name: body
+          description: A new `TodoModel`
+          in: body
+          schema:
+            $ref: '#/definitions/TodoModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TodoModel'
+    get:
+      description: Get all `TodoModels`.
+      operationId: listTodos
+      parameters:
+        - name: creator
+          in: query
+          description: The user ID whom created the todos
+          required: true
+          type: string
+        - name: tag
+          in: query
+          description: Any tags for todos
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TodoModel'        
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /secure/tags:
+    x-swagger-router-controller: tag.controller
+    get:
+      description: Get all TagModels
+      operationId: listTags
+      parameters:
+        - name: creator
+          in: query
+          description: The user ID associated with the tags
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  '/secure/users/{username}':
+    x-swagger-router-controller: user.controller
+    get:
+      description: Get one `UserModel` with given username.
+      operationId: findUserByUsername
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: ID of a `UserModel`
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserModel'
+  /authenticate:
+    x-swagger-router-controller: authenticate.controller
+    post:
+      description: Authenticates.
+      operationId: authenticate
+      parameters:
+        - name: body
+          description: Authenticates a `AuthenticationRequestModel`
+          in: body
+          schema:
+            $ref: '#/definitions/AuthenticationRequestModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthenticationResponseModel'
+# complex objects have schema definitions
+definitions:
+  AuthenticationRequestModel:
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  AuthenticationResponseModel:
+    required:
+      - success
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+      token:
+        type: string
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+      age:
+        type: number
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  TodoModel:
+    type: object
+    properties:
+      _id:
+        type: string
+      creator:
+        type: object
+        properties:
+          _id:
+            type: string
+          username:
+            type: string
+          name:
+            type: string
+      status:
+        type: object
+        properties:
+          label:
+            type: string
+          priority:
+            type: integer
+          _id:
+            type: string
+      priority:
+        type: object
+        properties:
+          label:
+            type: string
+          priority:
+            type: integer
+          _id:
+            type: string
+      __v:
+        type: integer
+      completed:
+        type: boolean
+      tag:
+        type: string
+      comment:
+        type: string
+      title:
+        type: string
+      created:
+        type: string
+  UserModel:
+    type: object
+    properties:
+      _id:
+        type: string
+      provider:
+        type: string
+      username:
+        type: string
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      __v:
+        type: integer
+    
