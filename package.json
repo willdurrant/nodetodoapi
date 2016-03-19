@@ -1,12 +1,11 @@
 {
-  "name": "nodetodoapi",
+  "name": "nodejs-Custom-Version-Sample",
   "version": "0.0.1",
   "private": true,
   "description": "New Swagger API Project",
   "keywords": [],
   "author": "",
   "license": "",
-  "main": "app.js",
   "dependencies": {
     "express": "^4.12.3",
     "fs": "0.0.2",
