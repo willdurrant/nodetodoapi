@@ -18,20 +18,6 @@ describe('controllers', function () {
 
             it('should return a user based upon given username', function (done) {
 
-                var controller = proxyquire('../../../api/controllers/user.controller',
-                    {
-                        '../helpers/helper': {
-                            getBar: function () {
-                                console.log('================================');
-                                return 'Ive been stubbed!';
-                            }
-                        }
-                    });
-
-                should.exist(controller);
-                controller.getBarPassthru().should.eql('Ive been stubbed!');
-
-
                 var User = mongoose.model('User');
                 var UserMock = sinon.mock(User);
 

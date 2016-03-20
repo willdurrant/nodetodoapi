@@ -5,12 +5,8 @@ var User = require('mongoose').model('User');
 
 module.exports = {
     findUserByUsername: findUserByUsername,
-    getBarPassthru: getBarPassthru
 };
 
-function getBarPassthru(req, res){
-    return helper.getBar();
-}
 
 function findUserByUsername(req, res) {
     helper.validateToken(req, res);
