@@ -18,7 +18,7 @@ describe('helper', function () {
             var mockDecoder = {};
             var testJsonWebToken = require('jsonwebtoken');
             var verifyCallbackStub = sinon.stub(testJsonWebToken, 'verify')
-            verifyCallbackStub.yields(null,'mockDecoder'); //stub calls callback passed to verify() with the provided arguments
+            verifyCallbackStub.yields(null, 'mockDecoder'); //stub calls callback passed to verify() with the provided arguments
 
             var moduleUnderTest = proxyquire('../../../api/helpers/helper',
                 {
@@ -51,10 +51,9 @@ describe('helper', function () {
                 done();
             });
 
-            var mockDecoder = {};
             var testJsonWebToken = require('jsonwebtoken');
             var verifyCallbackStub = sinon.stub(testJsonWebToken, 'verify')
-            verifyCallbackStub.yields('someErr',null); //stub calls callback passed to verify() with the provided err arguments
+            verifyCallbackStub.yields('someErr', null); //stub calls callback passed to verify() with the provided err arguments
 
             var moduleUnderTest = proxyquire('../../../api/helpers/helper',
                 {
@@ -73,21 +72,59 @@ describe('helper', function () {
             });
 
             var response = httpMocks.createResponse();
-            //response.json = {foo:'kjlj'};
-            response.json = function(){
-                console.log('sdfdsfsdf');
-                return {foo:'bar'};
-            }
+            sinon.spy(response, "json");
+            var expectedJson = {
+                success: false,
+                message: 'Failed to authenticate token.'
+            };
 
             //execute test
-            console.log('iweurywey ' + JSON.parse(moduleUnderTest.validateToken(request, response)));
+            moduleUnderTest.validateToken(request, response);
+            response.json.calledOnce;
+            response.json.getCall(0).args[0].should.be.eql(expectedJson);
 
-            verifyCallbackStub.restore();
             verifyCallbackStub.withArgs(mockToken, 'testSecret').called.should.equal(true);
             done();
 
+            after(function (done) {
+                response.json.restore();
+                verifyCallbackStub.restore();
+                done();
+            });
         });
 
+        it('should fail with http status of 403 if no token passed in', function (done) {
+
+            var moduleUnderTest = proxyquire('../../../api/helpers/helper',
+                {
+                    '../../config/config': {
+                        db: '' //set mongo to empty string or else it will try to start an instance
+                    }
+                }
+            );
+
+            var req = httpMocks.createRequest({
+                headers: {'x-access-token': null}
+            });
+
+            var res = httpMocks.createResponse();
+            sinon.spy(res, "status");
+            var sendSpy = res.send = sinon.spy(); //trick for wrapping nested function
+
+            var expectedStatus = 403;
+            var expectedSendMsg = { message: 'No token provided.', success: false };
+
+            moduleUnderTest.validateToken(req, res);
+            res.status.getCall(0).args[0].should.be.eql(expectedStatus);
+            sendSpy.calledOnce.should.be.equal(true);
+            sendSpy.getCall(0).args[0].should.be.eql(expectedSendMsg);
+            done();
+
+            after(function (done) {
+                res.status.restore();
+                done();
+            });
+        });
 
     });
 

@@ -23,7 +23,7 @@ or
 
     ```node app.js```
 
-* To run tests 
+* To run tests
 
 Need to not have set TODO_SECRET=
 
