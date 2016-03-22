@@ -127,7 +127,7 @@ function updateTodo(req, res) {
     console.log('updateTodo called with todo : ' + JSON.stringify(todo, null, 2))
 
     var query = {'_id': todo._id};
-
+    delete todo._id;
     Todo.findOneAndUpdate(query, todo, {upsert: true}, function (err, updatedTodo) {
         if (err) {
             console.log('Got err : ' + err)
