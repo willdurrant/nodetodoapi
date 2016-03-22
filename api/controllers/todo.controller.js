@@ -130,6 +130,7 @@ function updateTodo(req, res) {
   //todo.completed = req.body.completed;
   //todo.status = req.body.status;
   //todo.priority = req.body.priority;
+  delete todo._id;
   todo.isNew = false;
   todo.save(function(err, updatedTodo) {
     if (err) {
