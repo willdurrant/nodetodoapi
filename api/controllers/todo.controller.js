@@ -123,11 +123,14 @@ function createTodo(req, res) {
 
 
 function updateTodo(req, res) {
-    var todo = new Todo(req.swagger.params.body.value);
+    var todo = req.swagger.params.body.value;
     console.log('updateTodo called with todo : ' + JSON.stringify(todo, null, 2))
 
-    var query = {'_id': todo._id};
-    delete todo._id;
+    var query = {_id: todo._id};
+    delete todo['_id'];
+    console.log('todo._id = ' + todo._id);
+    console.log('updateTodo after id been deleted : ' + JSON.stringify(todo, null, 2))
+
     Todo.findOneAndUpdate(query, todo, {upsert: true}, function (err, updatedTodo) {
         if (err) {
             console.log('Got err : ' + err)
