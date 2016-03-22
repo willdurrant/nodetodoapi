@@ -122,6 +122,45 @@ function createTodo(req, res) {
 }
 
 function updateTodo(req, res) {
+  var todo = new Todo(req.swagger.params.body.value);
+  console.log('updateTodo called with todo : ' + JSON.stringify(todo, null, 2))
+  //todo.title = req.body.title;
+  //todo.tag = req.body.tag;
+  //todo.comment = req.body.comment;
+  //todo.completed = req.body.completed;
+  //todo.status = req.body.status;
+  //todo.priority = req.body.priority;
+  todo.isNew = false;
+  todo.save(function(err, updatedTodo) {
+    if (err) {
+      console.log('Got err : ' + err)
+      return res.status(400).send({
+        message: helper.getErrorMessage(err)
+      });
+    } else {
+
+      console.log('Updated todo : ' + JSON.stringify(updatedTodo, null, 2));
+      //res.json(updatedTodo);
+
+      //Should be a way to populate a object reference without doing another query but for the swagger validation
+      //the creator needs populating
+      Todo.findById(updatedTodo._id).populate('creator', 'name username').exec(function(err, retrievedTodo) {
+        if (err) {
+          return res.status(400).send({
+            message: helper.getErrorMessage(err)
+          });
+        } else {
+          console.log('Updated todo : ' + JSON.stringify(retrievedTodo, null, 2));
+          res.json(retrievedTodo);
+        }
+      });
+
+    }
+  });
+};
+
+
+function _updateTodo(req, res) {
   helper.validateToken(req, res);
   var todo = new Todo(req.swagger.params.body.value);
   //console.log('updateTodo called with updated Todo : ' + JSON.stringify(todo, null, 2));

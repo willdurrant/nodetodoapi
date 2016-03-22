@@ -1,0 +1,22 @@
+{
+  "_id": "56eedb8d2b34006c4774185b",
+  "creator": {
+    "_id": "56eed888f521f43426fc6c1c",
+    "username": "jsmith",
+    "name": "Test",
+    "email": "test.user@gmail.com",
+    "password": "482c811da5d5b4bc6d497ffa98491e38",
+    "__v": 0
+  },
+  "title": "dsfds",
+  "tag": "ere",
+  "status": {
+    "label": "Not Started",
+    "priority": 1
+  },
+  "priority": {
+    "label": "Normal",
+    "priority": 1
+  },
+  "comment": ""
+}

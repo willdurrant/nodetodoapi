@@ -239,6 +239,7 @@ definitions:
         type: string
       creator:
         type: object
+        required: ['_id']
         properties:
           _id:
             type: string
