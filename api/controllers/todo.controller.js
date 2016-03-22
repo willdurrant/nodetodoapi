@@ -137,7 +137,6 @@ function updateTodo(req, res) {
                         message: helper.getErrorMessage(err)
                     });
                 } else {
-                    console.log('Updated todo : ' + JSON.stringify(retrievedTodo, null, 2));
                     res.json(retrievedTodo);
                 }
             });
